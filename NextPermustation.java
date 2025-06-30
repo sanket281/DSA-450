@@ -1,36 +1,110 @@
-import java.util.Arrays;
-
-public class NextPermustation {
-    public static void main(String[] args) {
-        int[] nums = {3,2,1};
-        int i = nums.length-2;
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int right =1;
+        int left = 0;
         int temp = 0;
-        for(;i>=0;i--)
+        if(nums.length == 2)
         {
-            if(nums[i]<=nums[i+1])
+            temp = nums[1];
+            nums[1] = nums[0];
+            nums[0] = temp;
+        }
+        else
+        {
+        for(int i = nums.length-2;i>=0;i--)
+        {
+            if(nums[i]>=nums[i+1])
             {
+                right++;
+            }
+            else
+            {
+                left = nums.length - right;
                 break;
-    
             }
-        }
-        if(i>=0)
-        {
-
-            for(int j = nums.length-1;j>i;j--)
-            {
-                if(nums[j]>nums[i])
-                {
-                    temp = nums[j];
-                    nums[j] = nums[i];
-                    nums[i] = temp;
-                }
-            }
-        }
-        if(temp==0)
+        }  
+        int[] leftt = new int[left];
+        int[] rightt = new int[right];
+        if(left==0)
         {
             Arrays.sort(nums);
+        }  
+        else if(left >1)
+        {
+            for(int i=0;i<nums.length;i++)
+            {
+                if(i<left)
+                {
+                    leftt[i] = nums[i];
+                }
+                else
+                {
+                    rightt[i-left] = nums[i];
+                    
+                }
+            }
+            for(int i = rightt.length-1;i>=0;i--)
+            {
+                if(rightt[i]>leftt[leftt.length-1])
+                {
+                            temp = leftt[leftt.length-1];
+                            leftt[leftt.length-1] = rightt[i];
+                            rightt[i] = temp;
+                            // Arrays.sort(leftt);
+                            Arrays.sort(rightt);
+                            break;
+                }
+            }
+            for(int i = 0;i<nums.length;i++)
+            {
+                if(i<left)
+                {
+                    nums[i] = leftt[i];
+                }
+                else
+                {
+                    nums[i] = rightt[i-left];
+                }
+            }
+        } 
+        else
+        {
+            for(int i=0;i<nums.length;i++)
+            {
+                if(i<left)
+                {
+                    leftt[i] = nums[i];
+                }
+                else
+                {
+                    rightt[i-left] = nums[i];
+                    
+                }
+            }
+            for(int i=rightt.length-1;i>=0;i--)
+            {
+                if(rightt[i]>nums[0])
+                {
+                    temp = nums[0];
+                    leftt[0] = rightt[i];
+                    rightt[i] = temp;
+                    break;
+                }
+            }
+            Arrays.sort(rightt);
+            for(int i = 0;i<nums.length;i++)
+            {
+                if(i<left)
+                {
+                    nums[i] = leftt[i];
+                }
+                else
+                {
+                    nums[i] = rightt[i-left];
+                }
+            }
+        } 
         }
+          
     }
 }
-
-
